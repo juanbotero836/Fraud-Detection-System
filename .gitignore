@@ -1,0 +1,13 @@
+# Datos y modelos (muy pesados para Git)
+data/
+models/
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.env
+
+# VS Code
+.vscode/
+*.code-workspace
