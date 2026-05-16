@@ -1,7 +1,9 @@
 from features import FeaturePipeline
 from train import FraudDetectionTrainer
+from pathlib import Path
 
-DATA_PATH = '../data/raw/creditcard.csv'
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_PATH = BASE_DIR / 'data' / 'raw' / 'creditcard.csv'
 
 def main():
     # 1. Cragar y preparar los datos
