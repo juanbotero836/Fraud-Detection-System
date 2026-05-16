@@ -8,7 +8,7 @@ class FeaturePipeline:
     def __init__(self, test_size: float = 0.2, random_state:int = 42):
         self.test_size = test_size
         self.random_state = random_state
-        self.pipeline = self._built_pipeline
+        self.pipeline = self._built_pipeline()
         
     def _built_pipeline(self) -> Pipeline:
         """
