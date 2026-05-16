@@ -22,7 +22,7 @@ class FeaturePipeline:
         """
         Cargar el dataset y convertirlo en df
         """
-        return pd.DataFrame(path)
+        return pd.read_csv(path)
         
     def split_features_target(self, df : pd.DataFrame):
         X = df.drop(columns=['Class'])
