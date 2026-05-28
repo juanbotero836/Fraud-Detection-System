@@ -1,5 +1,6 @@
+from pathlib import Path
+import joblib
 import pandas as pd
-import numpy as np
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
@@ -44,5 +45,13 @@ class FeaturePipeline:
         Solo transform en test. El Pipeline ya fue ajustado en train.
         """
         return self.pipeline.transform(X_test)
+    
+    def save_pipeline(self, path = 'models/pipeline.pkl'):
+        models_dir = Path(path).parent
+        models_dir.mkdir(parents=True, exist_ok=True)
+        
+        joblib.dump(self.pipeline, path)
+        
+        print(f'Pipeline Guardado en: {path}')
         
     

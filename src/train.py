@@ -1,6 +1,5 @@
 from pathlib import Path
-import pickle
-import os
+import joblib
 import mlflow
 import mlflow.sklearn
 from sklearn.metrics import classification_report, roc_auc_score
@@ -30,8 +29,20 @@ class FraudDetectionTrainer:
             raise ValueError(f'Metodo Desconocido: {method}. Usar SMOTE o ADASYN')
         return sampler.fit_resample(X_train, y_train)
     
+    def _save_model(self, model, model_name):
+        models_dir = Path('models')
+        models_dir.mkdir(parents=True, exist_ok=True)
+        model_path = models_dir / f'{model_name}.pkl'
+        
+        joblib.dump(model, model_path)
+        
+        print(f'Modelo Guardado en: {model_path}')
+    
     def _log_run(self, model, model_name, sampling_method, X_train, y_train, X_test, y_test):
-        with mlflow.start_run(run_name=f'{model_name}_{sampling_method}'):
+        
+        run_name = f'{model_name}_{sampling_method}'
+        
+        with mlflow.start_run(run_name=run_name):
             model.fit(X_train, y_train)
             
             y_pred = model.predict(X_test)
@@ -46,7 +57,9 @@ class FraudDetectionTrainer:
             mlflow.log_metric('precision_fraud', report['1']['precision'])
             mlflow.log_metric('recall_fraud', report['1']['recall'])
             mlflow.log_metric('f1_fraud', report['1']['f1-score'])
-            mlflow.sklearn.log_model(model, artifact_path='model')
+            mlflow.sklearn.log_model(model, name='model')
+            
+            self._save_model(model, model_name)
             
             print(f"{model_name} + {sampling_method} | ROC-AUC: {roc_auc:.4f} | Recall: {report['1']['recall']:.4f}")
             
@@ -56,17 +69,4 @@ class FraudDetectionTrainer:
             for model_name, model in self.MODELS.items():
                 self._log_run(model, model_name, sampling_method, X_res, y_res, X_test, y_test)
                 
-    def save_best_model(self, model, pipeline, path : str = '../models'):
-        # Convertir el str a un objeto Path
-        folder_path = Path(path)
-        folder_path.mkdir(parents=True, exist_ok=True)
-        
-        model_file = folder_path / 'model.pkl'
-        pipeline_file = folder_path / 'pipeline.pkl'
-        
-        with open(model_file, 'wb') as f:
-            pickle.dump(model, f)
-        with open(pipeline_file, 'wb') as f:
-            pickle.dump(pipeline, f)
-            
-        print(f'Modelo y Pipeline guardados en: {folder_path.resolve()}')
+
