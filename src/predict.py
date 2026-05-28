@@ -1,13 +1,17 @@
+from pathlib import Path
 import pickle
 import pandas as pd
 
 class FraudPredictor:
     
-    def __init__(self, model_path : str = '../models/model.pkl',
-                 pipeline_path : str = '../models/pipeline.pkl'):
+    def __init__(self, model_path : str = None,
+                 pipeline_path : str = None):
+        BASE_DIR = Path(__file__).resolve().parent.parent
+        self.model_path = Path(model_path) if model_path else BASE_DIR / 'models' / 'model.pkl'
+        self.pipeline_path = Path(pipeline_path) if pipeline_path else BASE_DIR / 'models' / 'pipeline.pkl'
         
-        self.model = self._load(model_path)
-        self.pipeline = self._load(pipeline_path)
+        self.model = self._load(self.model_path)
+        self.pipeline = self._load(self.pipeline_path)
         
     def _load(self, path: str):
         with open(path, 'rb') as f:

@@ -1,3 +1,4 @@
+from pathlib import Path
 import pickle
 import os
 import mlflow
@@ -56,9 +57,16 @@ class FraudDetectionTrainer:
                 self._log_run(model, model_name, sampling_method, X_res, y_res, X_test, y_test)
                 
     def save_best_model(self, model, pipeline, path : str = '../models'):
-        os.makedirs(path, exist_ok=True)
-        with open(f'{path}model.pkl', 'wb') as f:
+        # Convertir el str a un objeto Path
+        folder_path = Path(path)
+        folder_path.mkdir(parents=True, exist_ok=True)
+        
+        model_file = folder_path / 'model.pkl'
+        pipeline_file = folder_path / 'pipeline.pkl'
+        
+        with open(model_file, 'wb') as f:
             pickle.dump(model, f)
-        with open(f'{path}pipeline.pkl', 'wb') as f:
+        with open(pipeline_file, 'wb') as f:
             pickle.dump(pipeline, f)
-        print(f'Modelo y pipeline guardados en {path}')
+            
+        print(f'Modelo y Pipeline guardados en: {folder_path.resolve()}')
