@@ -1,3 +1,5 @@
+import pickle
+import os
 import mlflow
 import mlflow.sklearn
 from sklearn.metrics import classification_report, roc_auc_score
@@ -53,4 +55,10 @@ class FraudDetectionTrainer:
             for model_name, model in self.MODELS.items():
                 self._log_run(model, model_name, sampling_method, X_res, y_res, X_test, y_test)
                 
-                
+    def save_best_model(self, model, pipeline, path : str = '../models'):
+        os.makedirs(path, exist_ok=True)
+        with open(f'{path}model.pkl', 'wb') as f:
+            pickle.dump(model, f)
+        with open(f'{path}pipeline.pkl', 'wb') as f:
+            pickle.dump(pipeline, f)
+        print(f'Modelo y pipeline guardados en {path}')
