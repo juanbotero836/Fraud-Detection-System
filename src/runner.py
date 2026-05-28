@@ -20,6 +20,11 @@ def main():
     trainer = FraudDetectionTrainer()
     trainer.run_all_experiments(X_train, y_train, X_test, y_test)
     
+    trainer.save_best_model(
+        model = trainer.MODELS['XGBoost'],
+        pipeline = feature_pipeline.pipeline
+    )
+    
 if __name__ == '__main__':
     main()
     
