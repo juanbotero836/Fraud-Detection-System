@@ -7,3 +7,4 @@ lightgbm
 mlflow
 fastapi
 uvicorn
+pytest
