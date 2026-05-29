@@ -28,8 +28,3 @@ def test_train_test_split_proportions():
     
     assert len(X_test) == 20
     assert len(X_train) == 80
-    
-    
-    
-    
-    
