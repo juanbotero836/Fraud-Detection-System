@@ -12,7 +12,6 @@ predictor = FraudPredictor()
 
 class TransactionRequest(BaseModel):
     Time : float
-    Amount : float
     V1 : float
     V2 : float
     V3 : float
@@ -41,10 +40,11 @@ class TransactionRequest(BaseModel):
     V26 : float
     V27 : float
     V28 : float
+    Amount : float
 
 class PredictionResponse(BaseModel):
     is_fraud : bool
-    probability : float
+    fraud_probability : float
     
 @app.get("/health")
 def health_check():
