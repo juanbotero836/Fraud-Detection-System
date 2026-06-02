@@ -18,3 +18,7 @@ venv/
 # Experimentos 
 mlruns/
 *.db
+
+# Word
+*.docx
+*.pdf
