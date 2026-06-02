@@ -1,6 +1,5 @@
 # Datos y modelos (muy pesados para Git)
 data/
-models/
 
 # Python
 __pycache__/
