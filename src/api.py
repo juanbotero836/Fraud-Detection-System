@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 from predict import FraudPredictor
 
@@ -46,9 +47,9 @@ class PredictionResponse(BaseModel):
     is_fraud : bool
     fraud_probability : float
     
-@app.get("/health")
-def health_check():
-    return {"status": "ok"}
+@app.get("/", include_in_schema=False)
+def redirect_to_docs():
+    return RedirectResponse(url="/docs")
 
 @app.post("/predict", response_model=PredictionResponse)
 def predict(transaction: TransactionRequest):
